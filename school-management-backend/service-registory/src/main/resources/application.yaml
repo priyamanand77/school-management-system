@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: service-registory
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=10000,expireAfterWrite=10m
+  output:
+    ansi:
+      enabled: always
+
+server:
+  port: 8761
+
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,info,prometheus,threaddump,heapdump,loggers
+      base-path: /service-registry/actuator
+  endpoint:
+    health:
+      show-details: when-authorized
+      show-components: when-authorized
+      probes:
+        enabled: true
+  health:
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true
+  metrics:
+    export:
+      simple:
+        enabled: true
+  info:
+    app:
+      name: ${spring.application.name}

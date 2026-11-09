@@ -1,0 +1,61 @@
+spring:
+  application:
+    name: auth-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+
+
+jwt:
+  keystore:
+    path: classpath:certs/jwt_secrets.jks
+    password: jwt_password
+    alias: jwtkey
+    key-password: jwt_password
+  access-token-validity-seconds: 1800
+  refresh-token-validity-seconds: 1209600
+
+
+server:
+  port: 0
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,info,prometheus,threaddump,heapdump,loggers
+      base-path: /auth/actuator
+  endpoint:
+    health:
+      show-details: when-authorized
+      show-components: when-authorized
+      probes:
+        enabled: true
+  health:
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true
+  metrics:
+    export:
+      simple:
+        enabled: true
+  info:
+    app:
+      name: ${spring.application.name}
